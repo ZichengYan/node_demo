@@ -1,0 +1,14 @@
+{
+  "name": "create-lecture-files",
+  "version": "0.0.1",
+  "description": "指定文件夹创建文件",
+  "main": "index.js",
+  "bin": {
+  	"nc":"./bin/cr.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert",
+  "license": "MIT"
+}
