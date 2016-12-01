@@ -9,6 +9,7 @@ E:\study\exercise\workspace\popular_Angular
 const program = require('commander');
 var test = '在当前目录创建一个名为dayx文件夹,并且在其中创建两个名为' + '\n' + '               lecture preview的文件夹.';
 var fs = require('fs');
+var async=require('async');
 var pathO = require('path');
 var arr = [];
 var stop = 0;
@@ -23,7 +24,7 @@ var fnTest = function() {
 
 
 // 读取路径中所有文件夹
-function readPath(path, callback) {
+function readPath(path) {
     fs.readdir(path, (err, files) => {
         //console.log(files)
         //遍历文件中所有的文件
@@ -42,7 +43,6 @@ function readPath(path, callback) {
             });
         });
     });
-    callback(arr);
 }
 
 
@@ -61,9 +61,7 @@ function sort(arr) {
         }
         var pN = '/day' + num;
         // console.log(arr[arr.length - 1] + 1);
-
-        
-
+        makeDir(path + pN);
         setTimeout(function() {
             makeDir(path + pN + '/lecture');
             makeDir(path + pN + '/preview');
