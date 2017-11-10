@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.js"></script>
+    <style>
+        div {
+            width: 100px;
+            line-height: 35px;
+            background-color: #35a0cd;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+<input type="file" id="upload">
+<p>进度: <span id="pro"></span></p>
+<div id="submit">点击提交</div>
+<script>
+    $(function () {
+        $("#submit").click(function (e) {
+            e.preventDefault();
+            var f = $("#upload")[0].files[0];
+            var formData = new FormData();
+            formData.append("uploadFile", f);
+            console.dir(f);
+            $.ajax({
+                url: "/upload",
+                type: 'POST',
+                data: formData,
+                dataType: "json",
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                xhr: function(){        //这是关键  获取原生的xhr对象  做以前做的所有事情
+                    var xhr = jQuery.ajaxSettings.xhr();
+                    xhr.upload.onload = function (data){
+                        console.log('finish downloading')
+                    }
+
+
+                    xhr.upload.onprogress = function (ev) {
+                        console.log("ev",ev);
+                        if(ev.lengthComputable) {
+                            var percent = 100 * ev.loaded/ev.total;
+                            $('#pro').html(percent+'%');
+                            console.log("perscent",percent,ev)
+                        }
+                    }
+                    return xhr;
+                },
+
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (err) {
+                    alert("fail")
+                    console.log(err);
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>
